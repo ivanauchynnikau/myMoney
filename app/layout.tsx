@@ -1,6 +1,8 @@
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
 
+const basePath = process.env.NODE_ENV === 'production' ? '/myMoney' : ''
+
 export default function RootLayout({
   children,
 }: {
@@ -11,7 +13,7 @@ export default function RootLayout({
       <head>
         <title>Monefy Clone</title>
         <meta name="description" content="Track your expenses and income" />
-        <link rel="icon" href="/myMoney/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href={`${basePath}/favicon.svg`} type="image/svg+xml" />
       </head>
       <body className="antialiased">
         <ThemeProvider>

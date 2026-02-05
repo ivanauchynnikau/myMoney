@@ -22,7 +22,6 @@ export function useTheme() {
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>('light')
   const [mounted, setMounted] = useState(false)
-  const supabase = createClient()
 
   useEffect(() => {
     setMounted(true)
@@ -31,6 +30,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   async function loadTheme() {
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       const { data } = await supabase
@@ -51,6 +51,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme)
     document.documentElement.classList.toggle('dark', newTheme === 'dark')
 
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
       await supabase

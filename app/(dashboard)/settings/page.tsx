@@ -9,13 +9,13 @@ export default function SettingsPage() {
   const [period, setPeriod] = useState<PeriodType>('month')
   const [loading, setLoading] = useState(true)
   const { theme, toggleTheme } = useTheme()
-  const supabase = createClient()
 
   useEffect(() => {
     loadSettings()
   }, [])
 
   async function loadSettings() {
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -34,6 +34,7 @@ export default function SettingsPage() {
   async function updatePeriod(newPeriod: PeriodType) {
     setPeriod(newPeriod)
     
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 

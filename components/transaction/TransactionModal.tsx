@@ -32,8 +32,6 @@ export default function TransactionModal({
   const [note, setNote] = useState('')
   const [date, setDate] = useState(new Date().toISOString().split('T')[0])
 
-  if (!isOpen) return null
-
   const handleAmountConfirm = () => {
     if (parseFloat(amount) > 0) {
       setStep('category')
@@ -67,6 +65,8 @@ export default function TransactionModal({
   }
 
   const filteredCategories = categories.filter((cat) => cat.type === type)
+
+  if (!isOpen) return null
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">

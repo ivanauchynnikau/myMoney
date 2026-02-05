@@ -8,13 +8,13 @@ import type { Category } from '@/types/database.types'
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
     loadCategories()
   }, [])
 
   async function loadCategories() {
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -32,6 +32,7 @@ export default function CategoriesPage() {
   async function deleteCategory(id: string) {
     if (!confirm('Удалить категорию?')) return
     
+    const supabase = createClient()
     await supabase.from('categories').delete().eq('id', id)
     loadCategories()
   }

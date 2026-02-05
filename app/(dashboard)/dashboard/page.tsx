@@ -22,8 +22,6 @@ export default function DashboardPage() {
   const [modalType, setModalType] = useState<'expense' | 'income'>('expense')
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null)
 
-  const supabase = createClient()
-
   useEffect(() => {
     loadUserSettings()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -35,6 +33,7 @@ export default function DashboardPage() {
   }, [currentDate, period])
 
   async function loadUserSettings() {
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -53,6 +52,7 @@ export default function DashboardPage() {
     setLoading(true)
     const { start, end } = getPeriodRange(currentDate, period)
     
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
@@ -104,6 +104,7 @@ export default function DashboardPage() {
     note: string
     date: Date
   }) {
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
