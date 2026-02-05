@@ -32,17 +32,17 @@ export default function CategoryGrid({
   ]
 
   return (
-    <div className="relative aspect-square max-w-[480px] mx-auto px-4 py-8">
+    <div className="relative aspect-square max-w-[400px] mx-auto h-[400px]">
       {data.slice(0, 8).map((item, index) => (
         <button
           key={item.category.id}
           onClick={() => onCategoryClick(item.category)}
           onMouseEnter={() => onCategoryHover(item.category.id)}
           onMouseLeave={() => onCategoryHover(null)}
-          className={`absolute ${positions[index]} flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95`}
+          className={`absolute ${positions[index]} flex flex-col items-center gap-1 transition-transform hover:scale-110 active:scale-95 pointer-events-auto`}
         >
           <div
-            className="w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-lg"
+            className="w-14 h-14 rounded-full flex items-center justify-center text-xl shadow-lg"
             style={{ backgroundColor: item.category.color }}
           >
             {item.category.icon}
@@ -60,11 +60,6 @@ export default function CategoryGrid({
           )}
         </button>
       ))}
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        {/* Placeholder for DonutChart */}
-        <div className="w-[300px] h-[300px]" />
-      </div>
     </div>
   )
 }

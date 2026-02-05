@@ -31,30 +31,32 @@ export default function DonutChart({
 
   const hoveredItem = data.find((item) => item.category.id === hoveredCategory)
 
+  // Если нет данных, показываем пустую диаграмму
+  const displayData = chartData.length > 0 ? chartData : [{ name: 'Empty', value: 1, color: '#E0E0E0' }]
+
   return (
-    <div className="relative aspect-square max-w-[300px] mx-auto">
+    <div className="relative w-[250px] h-[250px]">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
-            data={chartData}
+            data={displayData}
             cx="50%"
             cy="50%"
-            innerRadius="70%"
-            outerRadius="90%"
+            innerRadius="65%"
+            outerRadius="85%"
             startAngle={90}
             endAngle={-270}
             dataKey="value"
-            strokeWidth={2}
-            stroke="var(--bg)"
+            strokeWidth={0}
           >
-            {chartData.map((entry, index) => (
+            {displayData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
         {hoveredItem ? (
           <>
             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>

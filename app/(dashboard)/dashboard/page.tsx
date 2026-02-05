@@ -109,21 +109,26 @@ export default function DashboardPage() {
         onPeriodChange={setPeriod}
       />
 
-      <div className="relative py-8">
-        <CategoryGrid
-          data={categoryTotals}
-          onCategoryClick={(category) => {
-            setModalType('expense')
-            setModalOpen(true)
-          }}
-          onCategoryHover={setHoveredCategory}
-        />
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="relative py-8 min-h-[500px]">
+        {/* Диаграмма в центре */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <DonutChart
             data={categoryTotals}
             totalExpenses={totalExpenses}
             totalIncome={totalIncome}
             hoveredCategory={hoveredCategory}
+          />
+        </div>
+
+        {/* Категории вокруг диаграммы */}
+        <div className="relative z-20">
+          <CategoryGrid
+            data={categoryTotals}
+            onCategoryClick={(category) => {
+              setModalType('expense')
+              setModalOpen(true)
+            }}
+            onCategoryHover={setHoveredCategory}
           />
         </div>
       </div>
