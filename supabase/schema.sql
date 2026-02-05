@@ -18,6 +18,8 @@ CREATE POLICY "Users can update own profile"
   ON profiles FOR UPDATE 
   USING (auth.uid() = id);
 
+-- Note: No INSERT policy - profiles are created only by trigger with SECURITY DEFINER
+
 -- Categories table
 CREATE TABLE categories (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

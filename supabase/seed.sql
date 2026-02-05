@@ -25,7 +25,7 @@ CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
   -- Create profile
-  INSERT INTO profiles (id, theme, initial_balance)
+  INSERT INTO public.profiles (id, theme, initial_balance)
   VALUES (NEW.id, 'light', 0);
   
   -- Create default categories
