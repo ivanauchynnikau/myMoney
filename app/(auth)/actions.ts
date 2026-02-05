@@ -19,6 +19,7 @@ async function ensureUserProfile(userId: string) {
     await supabase.from('profiles').insert({
       id: userId,
       theme: 'light',
+      period: 'month',
       initial_balance: 0,
     })
 

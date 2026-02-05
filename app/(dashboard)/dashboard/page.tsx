@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [period, setPeriod] = useState<PeriodType>('month')
   const [categories, setCategories] = useState<Category[]>([])
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [availableDates, setAvailableDates] = useState<Date[]>([new Date()])
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalType, setModalType] = useState<'expense' | 'income'>('expense')
@@ -24,8 +25,27 @@ export default function DashboardPage() {
   const supabase = createClient()
 
   useEffect(() => {
+    loadUserSettings()
+  }, [])
+
+  useEffect(() => {
     loadData()
   }, [currentDate, period])
+
+  async function loadUserSettings() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('period')
+      .eq('id', user.id)
+      .single()
+
+    if (profile?.period) {
+      setPeriod(profile.period as PeriodType)
+    }
+  }
 
   async function loadData() {
     setLoading(true)
@@ -34,18 +54,45 @@ export default function DashboardPage() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return
 
-    const [categoriesRes, transactionsRes] = await Promise.all([
+    const [categoriesRes, transactionsRes, allTransactionsRes] = await Promise.all([
       supabase.from('categories').select('*').eq('user_id', user.id).order('position'),
       supabase
         .from('transactions')
         .select('*')
         .eq('user_id', user.id)
         .gte('transaction_date', start.toISOString())
-        .lte('transaction_date', end.toISOString())
+        .lte('transaction_date', end.toISOString()),
+      supabase
+        .from('transactions')
+        .select('transaction_date')
+        .eq('user_id', user.id)
+        .order('transaction_date', { ascending: false })
     ])
 
     if (categoriesRes.data) setCategories(categoriesRes.data)
     if (transactionsRes.data) setTransactions(transactionsRes.data)
+
+    // Получаем уникальные месяцы с данными
+    if (allTransactionsRes.data && allTransactionsRes.data.length > 0) {
+      const uniqueMonths = new Map<string, Date>()
+      allTransactionsRes.data.forEach(t => {
+        const date = new Date(t.transaction_date)
+        const key = `${date.getFullYear()}-${date.getMonth()}`
+        if (!uniqueMonths.has(key)) {
+          uniqueMonths.set(key, new Date(date.getFullYear(), date.getMonth(), 1))
+        }
+      })
+      const months = Array.from(uniqueMonths.values()).sort((a, b) => a.getTime() - b.getTime())
+      setAvailableDates(months)
+      
+      // Устанавливаем текущую дату на ближайший месяц с данными
+      if (!months.find(d => d.getTime() === new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getTime())) {
+        setCurrentDate(months[months.length - 1])
+      }
+    } else {
+      setAvailableDates([new Date(currentDate.getFullYear(), currentDate.getMonth(), 1)])
+    }
+    
     setLoading(false)
   }
 
@@ -106,7 +153,7 @@ export default function DashboardPage() {
         currentDate={currentDate}
         period={period}
         onDateChange={setCurrentDate}
-        onPeriodChange={setPeriod}
+        availableDates={availableDates}
       />
 
       <div className="relative py-8 min-h-[500px]">

@@ -2,6 +2,7 @@
 CREATE TABLE profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   theme TEXT DEFAULT 'light' CHECK (theme IN ('light', 'dark')),
+  period TEXT DEFAULT 'month' CHECK (period IN ('day', 'month', 'year')),
   initial_balance NUMERIC DEFAULT 0,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
