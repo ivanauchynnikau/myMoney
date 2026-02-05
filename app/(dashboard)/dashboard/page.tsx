@@ -26,10 +26,12 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadUserSettings()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
     loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentDate, period])
 
   async function loadUserSettings() {

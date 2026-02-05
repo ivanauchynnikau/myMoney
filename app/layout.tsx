@@ -1,11 +1,5 @@
-import type { Metadata } from 'next'
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/ThemeProvider'
-
-export const metadata: Metadata = {
-  title: 'Monefy Clone',
-  description: 'Track your expenses and income',
-}
 
 export default function RootLayout({
   children,
@@ -14,6 +8,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" suppressHydrationWarning>
+      <head>
+        <title>Monefy Clone</title>
+        <meta name="description" content="Track your expenses and income" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+      </head>
       <body className="antialiased">
         <ThemeProvider>
           {children}
