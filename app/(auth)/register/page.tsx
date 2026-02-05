@@ -2,16 +2,16 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { login } from '../actions'
+import { signup } from '../actions'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setLoading(true)
     setError(null)
-    const result = await login(formData)
+    const result = await signup(formData)
     if (result?.error) {
       setError(result.error)
       setLoading(false)
@@ -22,7 +22,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--bg)' }}>
       <div className="w-full max-w-md p-8 rounded-lg shadow-lg" style={{ background: 'var(--card)' }}>
         <h1 className="text-3xl font-bold text-center mb-8" style={{ color: 'var(--text)' }}>
-          Monefy
+          Регистрация
         </h1>
         
         <form action={handleSubmit} className="space-y-4">
@@ -63,6 +63,9 @@ export default function LoginPage() {
               }}
               placeholder="••••••"
             />
+            <p className="mt-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
+              Минимум 6 символов
+            </p>
           </div>
 
           {error && (
@@ -77,14 +80,14 @@ export default function LoginPage() {
             className="w-full py-3 rounded-lg font-semibold transition-colors disabled:opacity-50"
             style={{ backgroundColor: 'var(--income)', color: 'white' }}
           >
-            {loading ? 'Вход...' : 'Войти'}
+            {loading ? 'Создание аккаунта...' : 'Создать аккаунт'}
           </button>
         </form>
 
         <p className="text-center mt-6 text-sm" style={{ color: 'var(--text-secondary)' }}>
-          Нет аккаунта?{' '}
-          <Link href="/register" className="font-semibold" style={{ color: 'var(--income)' }}>
-            Зарегистрироваться
+          Уже есть аккаунт?{' '}
+          <Link href="/login" className="font-semibold" style={{ color: 'var(--income)' }}>
+            Войти
           </Link>
         </p>
       </div>
