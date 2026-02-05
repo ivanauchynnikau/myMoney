@@ -27,6 +27,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true)
     loadTheme()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function loadTheme() {
@@ -57,10 +58,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         .update({ theme: newTheme })
         .eq('id', user.id)
     }
-  }
-
-  if (!mounted) {
-    return <>{children}</>
   }
 
   return (
