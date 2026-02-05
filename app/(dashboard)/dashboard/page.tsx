@@ -114,7 +114,8 @@ export default function DashboardPage() {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
           <DonutChart
             data={categoryTotals}
-            balance={balance}
+            totalIncome={totalIncome}
+            totalExpenses={totalExpenses}
             hoveredCategory={hoveredCategory}
           />
         </div>

@@ -12,13 +12,15 @@ interface CategoryTotal {
 
 interface DonutChartProps {
   data: CategoryTotal[]
-  balance: number
+  totalIncome: number
+  totalExpenses: number
   hoveredCategory: string | null
 }
 
 export default function DonutChart({
   data,
-  balance,
+  totalIncome,
+  totalExpenses,
   hoveredCategory,
 }: DonutChartProps) {
   const chartData = data.map((item) => ({
@@ -69,11 +71,11 @@ export default function DonutChart({
           </>
         ) : (
           <>
-            <p className="text-sm mb-1" style={{ color: 'var(--text-secondary)' }}>
-              Остаток
+            <p className="text-2xl font-bold" style={{ color: 'var(--income)' }}>
+              {formatCurrency(totalIncome)}
             </p>
-            <p className="text-3xl font-bold" style={{ color: 'var(--income)' }}>
-              {formatCurrency(balance)}
+            <p className="text-xl font-semibold" style={{ color: 'var(--expense)' }}>
+              {formatCurrency(totalExpenses)}
             </p>
           </>
         )}
