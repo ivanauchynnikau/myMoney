@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
+-- Политики для profiles (важно: все 3!)
 CREATE POLICY "Users can view own profile" 
   ON profiles FOR SELECT 
   USING (auth.uid() = id);
