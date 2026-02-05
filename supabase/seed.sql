@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION create_default_categories(user_id UUID)
 RETURNS void AS $$
 BEGIN
   -- Default expense categories
-  INSERT INTO categories (user_id, name, icon, color, type, position, is_default) VALUES
+  INSERT INTO public.categories (user_id, name, icon, color, type, position, is_default) VALUES
     (user_id, 'Транспорт', '🚊', '#FFB74D', 'expense', 1, true),
     (user_id, 'Еда', '🍽️', '#FF8A80', 'expense', 2, true),
     (user_id, 'Дом', '🏠', '#64B5F6', 'expense', 3, true),
@@ -18,7 +18,7 @@ BEGIN
     (user_id, 'Зарплата', '💰', '#66BB6A', 'income', 11, true),
     (user_id, 'Подработка', '💵', '#81C784', 'income', 12, true);
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Trigger to auto-create profile and categories on user signup
 CREATE OR REPLACE FUNCTION handle_new_user()
