@@ -2,6 +2,7 @@
 
 import { LogOut, Moon, Sun, Settings } from 'lucide-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useTheme } from '@/components/providers/ThemeProvider'
 import { logout } from '@/app/(auth)/actions'
 
@@ -11,6 +12,12 @@ interface HeaderProps {
 
 export default function Header({ userEmail }: HeaderProps) {
   const { theme, toggleTheme } = useTheme()
+  const router = useRouter()
+
+  async function handleLogout() {
+    await logout()
+    router.push('/login')
+  }
 
   return (
     <header className="border-b" style={{ borderColor: 'var(--border)', background: 'var(--card)' }}>
@@ -32,16 +39,16 @@ export default function Header({ userEmail }: HeaderProps) {
           </button>
 
           <Link
-            href="/categories"
+            href="/settings"
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             style={{ color: 'var(--text-secondary)' }}
-            title="Категории"
+            title="Настройки"
           >
             <Settings size={18} />
           </Link>
 
           <button
-            onClick={() => logout()}
+            onClick={handleLogout}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             style={{ color: 'var(--text-secondary)' }}
             title={userEmail}

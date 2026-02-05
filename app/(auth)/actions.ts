@@ -1,11 +1,7 @@
-'use server'
-
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/client'
 
 async function ensureUserProfile(userId: string) {
-  const supabase = await createClient()
+  const supabase = createClient()
   
   // Проверяем существование профиля
   const { data: profile } = await supabase
@@ -49,15 +45,13 @@ async function ensureUserProfile(userId: string) {
   }
 }
 
-export async function login(formData: FormData) {
-  const supabase = await createClient()
+export async function login(email: string, password: string) {
+  const supabase = createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { error, data: authData } = await supabase.auth.signInWithPassword(data)
+  const { error, data: authData } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
 
   if (error) {
     return { error: error.message }
@@ -67,19 +61,16 @@ export async function login(formData: FormData) {
     await ensureUserProfile(authData.user.id)
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  return { success: true }
 }
 
-export async function signup(formData: FormData) {
-  const supabase = await createClient()
+export async function signup(email: string, password: string) {
+  const supabase = createClient()
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string,
-  }
-
-  const { error, data: authData } = await supabase.auth.signUp(data)
+  const { error, data: authData } = await supabase.auth.signUp({
+    email,
+    password,
+  })
 
   if (error) {
     return { error: error.message }
@@ -89,13 +80,11 @@ export async function signup(formData: FormData) {
     await ensureUserProfile(authData.user.id)
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  return { success: true }
 }
 
 export async function logout() {
-  const supabase = await createClient()
+  const supabase = createClient()
   await supabase.auth.signOut()
-  revalidatePath('/', 'layout')
-  redirect('/login')
+  return { success: true }
 }
