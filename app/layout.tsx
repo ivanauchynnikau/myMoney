@@ -11,7 +11,7 @@ export default function RootLayout({
       <head>
         <title>Monefy Clone</title>
         <meta name="description" content="Track your expenses and income" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/myMoney/favicon.svg" type="image/svg+xml" />
       </head>
       <body className="antialiased">
         <ThemeProvider>

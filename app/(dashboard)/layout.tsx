@@ -28,24 +28,21 @@ export default function DashboardLayout({
     }
     
     checkUser()
-  }, [router])
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen" style={{ background: 'var(--bg)' }}>
-        <p style={{ color: 'var(--text-secondary)' }}>Загрузка...</p>
-      </div>
-    )
-  }
-
-  if (!user) {
-    return null
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)' }}>
-      <Header userEmail={user.email} />
-      <main>{children}</main>
+      {loading ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <p style={{ color: 'var(--text-secondary)' }}>Загрузка...</p>
+        </div>
+      ) : user ? (
+        <>
+          <Header userEmail={user.email} />
+          <main>{children}</main>
+        </>
+      ) : null}
     </div>
   )
 }
